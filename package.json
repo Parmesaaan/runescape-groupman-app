@@ -1,7 +1,7 @@
 {
   "name": "cgim-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,10 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@primeuix/themes": "^1.0.0",
+    "axios": "^1.8.1",
     "pinia": "^3.0.1",
     "primevue": "^4.3.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",

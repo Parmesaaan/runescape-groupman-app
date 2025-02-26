@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <router-view />
+  <h1>Dashboard.vue</h1>
 </template>
 
 <style scoped>
