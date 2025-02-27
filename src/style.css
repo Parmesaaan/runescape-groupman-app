@@ -30,12 +30,7 @@ body {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
+.p-button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -46,15 +41,35 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+.p-button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
+.p-button:focus,
+.p-button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.card {
+.p-inputtext {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.6em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: white;
+  transition: border-color 0.25s;
+}
+.p-inputtext:hover {
+  border-color: #646cff;
+}
+.p-inputtext:focus,
+.p-inputtext:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+  border-color: #646cff;
+}
+
+.p-card {
   padding: 2em;
 }
 
@@ -73,7 +88,7 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button {
+  .p-button {
     background-color: #f9f9f9;
   }
 }
