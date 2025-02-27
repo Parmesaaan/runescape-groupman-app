@@ -1,11 +1,11 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 import Login from '../views/Login.vue'
-import Dashboard from '../views/Home.vue'
+import Home from '../views/Home.vue'
 import {useAuthStore} from "../stores/auth.ts";
 
 const routes: Array<RouteRecordRaw> = [
     { path: '/login', name: 'Login', component: Login },
-    { path: '/home', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    { path: '/', name: 'Home', component: Home, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
