@@ -7,7 +7,7 @@ import Aura from "@primeuix/themes/aura"
 import App from "./App.vue"
 import router from "./router";
 import {createPinia} from "pinia";
-import { useAuthStore } from "./stores/auth"
+import {useStore} from "./stores"
 
 const app = createApp(App);
 app.use(createPinia())
@@ -16,12 +16,13 @@ app.use(PrimeVue, {
     theme: {
         preset: Aura,
         options: {
-            darkModeSelector: "system",
+            darkModeSelector: 'system',
+            prefix: 'p'
         },
     },
 });
 
-const authStore = useAuthStore()
+const authStore = useStore()
 authStore.initialize()
 
 app.mount("#app");

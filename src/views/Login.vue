@@ -5,14 +5,29 @@ import FloatLabel from "primevue/floatlabel"
 import InputText from "primevue/inputtext"
 import Password from "primevue/password"
 import {ref} from "vue"
+import {Credentials} from "../models";
+import {useStore} from "../stores";
+import router from "../router";
 
-const formData = ref<LoginForm>({
+const store = useStore()
+
+const formData = ref<Credentials>({
   username: '',
   password: ''
 })
 
-const submitForm = (event: Event) => {
+const login = async (event: Event) => {
   event.preventDefault()
+
+  try {
+    await store.login(formData.value)
+
+    if (store.isAuthenticated) {
+      await router.push('/')
+    }
+  } catch (e) {
+    console.log('Login failed', e)
+  }
 }
 </script>
 
@@ -36,7 +51,7 @@ const submitForm = (event: Event) => {
           </FloatLabel>
 
           <!-- Buttons -->
-          <Button label="Login" severity="primary" class="w-full mt-2" @click="submitForm" />
+          <Button label="Login" severity="primary" class="w-full mt-2" @click="login" />
 
         </div>
       </template>
