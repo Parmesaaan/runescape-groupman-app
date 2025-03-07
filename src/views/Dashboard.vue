@@ -3,7 +3,7 @@ import PanelMenu from 'primevue/panelmenu';
 import Divider from "primevue/divider";
 import Player from "../composables/player/Player.vue";
 import {useStore} from "../stores";
-import {type Component, computed, ref} from "vue";
+import {type Component, ref} from "vue";
 import Group from "../composables/group/Group.vue";
 import type {MenuItem} from "primevue/menuitem";
 import PlayerNotes from "../composables/player/PlayerNotes.vue";
@@ -11,6 +11,7 @@ import Tasks from "../composables/player/Tasks.vue";
 import GroupJoin from "../composables/group/GroupJoin.vue";
 import GroupCreate from "../composables/group/GroupCreate.vue";
 import router from "../router";
+import {Group as GroupModel} from "../models";
 
 const store = useStore()
 const profile = store.profile!
@@ -47,7 +48,10 @@ const menuItems = ref<MenuItem[]>([
         items: profile.groups.map(group => ({
           label: group.name,
           icon: "pi pi-users",
-          command: () => selectedComponent.value = Group
+          command: () => {
+            selectedComponent.value = Group
+            selectedGroup.value = group
+          }
         })),
       },
       {
@@ -79,6 +83,7 @@ const menuItems = ref<MenuItem[]>([
 ])
 
 const selectedComponent = ref<Component>()
+const selectedGroup = ref<GroupModel>()
 
 </script>
 
@@ -93,7 +98,7 @@ const selectedComponent = ref<Component>()
     </div>
     <Divider layout="vertical" />
     <div>
-      <component :is="selectedComponent"/>
+      <component :is="selectedComponent" :data="selectedGroup"/>
     </div>
   </div>
 </template>
