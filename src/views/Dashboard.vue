@@ -7,7 +7,7 @@ import {type Component, ref, shallowRef} from "vue";
 import Group from "../composables/group/Group.vue";
 import type {MenuItem} from "primevue/menuitem";
 import PlayerNotes from "../composables/player/PlayerNotes.vue";
-import Tasks from "../composables/player/Tasks.vue";
+import PlayerTasks from "../composables/player/PlayerTasks.vue";
 import GroupJoin from "../composables/group/GroupJoin.vue";
 import GroupCreate from "../composables/group/GroupCreate.vue";
 import router from "../router";
@@ -25,7 +25,7 @@ const menuItems = ref<MenuItem[]>([
   {
     label: "Tasks",
     icon: "pi pi-list",
-    command: () => selectedComponent.value = Tasks
+    command: () => selectedComponent.value = PlayerTasks
   },
   {
     label: "Notes",
@@ -91,15 +91,13 @@ const selectedGroup = ref<GroupModel>()
       <p class="font-medium text-gray-400 text-xs mt-auto">version 0.0.1-beta</p>
     </div>
     <Divider layout="vertical" />
-    <div>
-      <component :is="selectedComponent" :data="selectedGroup"/>
-    </div>
+    <component :is="selectedComponent" :data="selectedGroup" class="flex-grow"/>
   </div>
 </template>
 
 <style scoped>
 .dashboard {
-  min-width: 1000px;
+  min-width: 1100px;
   min-height: 550px;
   max-width: 1280px;
   max-height: 720px;

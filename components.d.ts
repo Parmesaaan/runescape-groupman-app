@@ -13,5 +13,8 @@ declare module 'vue' {
     Panel: typeof import('primevue/panel')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TabPanel: typeof import('primevue/tabpanel')['default']
+    TabPanels: typeof import('primevue/tabpanels')['default']
+    Tag: typeof import('primevue/tag')['default']
   }
 }
