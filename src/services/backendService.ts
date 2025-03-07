@@ -33,7 +33,7 @@ export class BackendService {
     try {
       const response = await axios.post(
         BASE_URL.concat(API_ROUTES.USERS.ACCESS.REFRESH_TOKEN),
-        { refresh }
+        { refreshToken: refresh }
       )
       const { token, refreshToken } = response.data
       return { token, refreshToken }

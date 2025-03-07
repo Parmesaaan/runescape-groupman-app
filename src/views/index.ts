@@ -1,2 +1,2 @@
-export * from './Home.vue'
+export * from './Dashboard.vue'
 export * from './Login.vue'

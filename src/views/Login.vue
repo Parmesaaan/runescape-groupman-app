@@ -7,7 +7,7 @@ import Password from "primevue/password"
 import {ref} from "vue"
 import {Credentials} from "../models";
 import {useStore} from "../stores";
-import router from "../router";
+import useRouter from "../router";
 
 const store = useStore()
 
@@ -23,7 +23,7 @@ const login = async (event: Event) => {
     await store.login(formData.value)
 
     if (store.isAuthenticated) {
-      await router.push('/')
+      await useRouter.push('/')
     }
   } catch (e) {
     console.log('Login failed', e)
@@ -32,11 +32,12 @@ const login = async (event: Event) => {
 </script>
 
 <template>
+  <div class="flex justify-center items-center w-full">
     <Card>
       <template #title>RS3 GIM Tracker</template>
       <template #subtitle>Login to continue</template>
       <template #content>
-        <div class="p-fluid flex flex-column gap-3 mt-3 mb-3">
+        <div class="flex flex-column gap-3 mt-3 mb-3">
 
           <!-- Username -->
           <FloatLabel variant="on">
@@ -57,4 +58,8 @@ const login = async (event: Event) => {
       </template>
       <template #footer>by <a href="https://github.com/Parmesaaan" target="_blank" rel="noopener noreferrer">Parmesaaan</a></template>
     </Card>
+  </div>
 </template>
+
+<style scoped>
+</style>
