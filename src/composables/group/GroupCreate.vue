@@ -3,7 +3,9 @@
 </script>
 
 <template>
-
+  <p class="m-0">
+    Create group here
+  </p>
 </template>
 
 <style scoped>

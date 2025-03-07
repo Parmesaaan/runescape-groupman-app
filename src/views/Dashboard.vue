@@ -3,7 +3,7 @@ import PanelMenu from 'primevue/panelmenu';
 import Divider from "primevue/divider";
 import Player from "../composables/player/Player.vue";
 import {useStore} from "../stores";
-import {type Component, ref} from "vue";
+import {type Component, ref, shallowRef} from "vue";
 import Group from "../composables/group/Group.vue";
 import type {MenuItem} from "primevue/menuitem";
 import PlayerNotes from "../composables/player/PlayerNotes.vue";
@@ -20,23 +20,17 @@ const menuItems = ref<MenuItem[]>([
   {
     label: profile.user.username,
     icon: "pi pi-user",
-    items: [
-      {
-        label: "My Account",
-        icon: "pi pi-id-card",
-        command: () => selectedComponent.value = Player
-      },
-      {
-        label: "Tasks",
-        icon: "pi pi-list",
-        command: () => selectedComponent.value = Tasks
-      },
-      {
-        label: "Notes",
-        icon: "pi pi-file",
-        command: () => selectedComponent.value = PlayerNotes
-      },
-    ]
+    command: () => selectedComponent.value = Player
+  },
+  {
+    label: "Tasks",
+    icon: "pi pi-list",
+    command: () => selectedComponent.value = Tasks
+  },
+  {
+    label: "Notes",
+    icon: "pi pi-file",
+    command: () => selectedComponent.value = PlayerNotes
   },
   {
     label: "Groups",
@@ -82,7 +76,7 @@ const menuItems = ref<MenuItem[]>([
   },
 ])
 
-const selectedComponent = ref<Component>()
+const selectedComponent = shallowRef<Component>()
 const selectedGroup = ref<GroupModel>()
 
 </script>
