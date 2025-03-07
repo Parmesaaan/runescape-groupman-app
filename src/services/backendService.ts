@@ -1,4 +1,4 @@
-import {Credentials, Profile, TokenPair} from "../models";
+import {Credentials, Profile, Task, TokenPair} from "../models";
 import axios from "axios";
 import {API_ROUTES, BASE_URL} from "../constants";
 import {useStore} from "../stores";
@@ -61,6 +61,33 @@ export class BackendService {
       return response.data as Profile
     } catch (e) {
       console.error('Get profile error:', e)
+      return null
+    }
+  }
+
+  public static async updateTask(task: Task): Promise<Task | null> {
+    const store = useStore()
+    const token = store.tokenPair?.token
+
+    if (!token) {
+      console.log('Cannot update task, no auth token present')
+      return null
+    }
+
+    try {
+      const response = await axios.put(
+        BASE_URL.concat(API_ROUTES.USERS.TASKS.UPDATE_TASK).concat("?taskId=" + task.id),
+        {
+          completed: true
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      return response.data as Task
+    } catch (e) {
+      console.error('Update task error:', e)
       return null
     }
   }

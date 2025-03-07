@@ -1,16 +1,9 @@
 import {Task, TaskType} from "../models";
+import {formatDistanceToNowStrict} from "date-fns";
 
 export const formatDateTime = (dateString: string): string => {
-  const date = new Date(dateString)
-
-  return new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(date)
+  const date = new Date(dateString);
+  return formatDistanceToNowStrict(date, { addSuffix: true });
 }
 
 export function isTaskAvailable(task: Task, currentDate: Date = new Date()): boolean {

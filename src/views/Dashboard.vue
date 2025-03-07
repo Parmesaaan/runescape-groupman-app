@@ -61,8 +61,8 @@ const menuItems = ref<MenuItem[]>([
     ]
   },
   {
-    label: "Settings",
-    icon: "pi pi-cog",
+    label: "Utilities",
+    icon: "pi pi-wrench",
     disabled: true
   },
   {
