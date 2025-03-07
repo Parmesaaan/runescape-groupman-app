@@ -1,102 +1,76 @@
 <script setup lang="ts">
-import Tree, {type TreeSelectionKeys} from 'primevue/tree';
+import PanelMenu from 'primevue/panelmenu';
 import Divider from "primevue/divider";
 import Player from "../composables/Player.vue";
 import {useStore} from "../stores";
-import {type Component, computed} from "vue";
-import type {TreeNode} from "primevue/treenode";
+import {type Component, computed, ref} from "vue";
 import Group from "../composables/Group.vue";
+import type {MenuItem} from "primevue/menuitem";
 
 const store = useStore()
 const profile = store.profile!
 
-const treeData = ref([
+const menuItems = ref<MenuItem[]>([
   {
-    key: "player",
-    label: profile.user.username || "User",
+    label: profile.user.username,
     icon: "pi pi-user",
-    data: profile.user,
+    key: "player",
+    items: [
+      {
+        label: "Notes",
+        icon: "pi pi-file",
+        key: "player-notes",
+      },
+      {
+        label: "Tasks",
+        icon: "pi pi-list",
+        key: "player-tasks",
+      },
+    ]
   },
   {
-    key: "player-notes",
-    label: "Notes",
-    icon: "pi pi-file",
-    data: profile.user.notes,
-  },
-  {
-    key: "player-tasks",
-    label: "Tasks",
-    icon: "pi pi-list",
-    data: profile.user.tasks,
-  },
-  {
-    key: "groups",
     label: "Groups",
     icon: "pi pi-users",
-    data: profile.groups,
-    children: profile.groups.map(group => {
-      return {
-        key: "group-select-".concat(group.id),
-        label: group.name,
+    key: "groups",
+    items: [
+      {
+        label: "My Groups",
         icon: "pi pi-users",
-        data: group,
-      } as TreeNode
-    })
-   },
-  {
-    key: "group-join",
-    label: "Join Group",
-    icon: "pi pi-user-plus",
-    data: {},
+        key: "groups-my",
+        items: profile.groups.map(group => ({
+          label: group.name,
+          icon: "pi pi-users",
+          key: `group-select-${group.id}`,
+        })),
+      },
+      {
+        label: "Join Group",
+        icon: "pi pi-user-plus",
+        key: "group-join",
+      },
+      {
+        label: "New Group",
+        icon: "pi pi-plus-circle",
+        key: "group-new",
+      },
+    ]
   },
-  {
-    key: "group-new",
-    label: "New Group",
-    icon: "pi pi-plus-circle",
-    data: {},
-  }
 ])
 
+const selectedKey = ref<string | undefined>()
+
 const getSelectedComponent = (key?: string) => {
-  if (!key) return null
-
-  if (key.startsWith("group")) {
-    return Group
-  }
-
-  if (key.startsWith("player")) {
-    return Player
-  }
-
-  return null
+  if (!key) return null;
+  if (key.startsWith("group")) return Group;
+  if (key.startsWith("player")) return Player;
+  return null;
 }
 
-const selectedKey = ref<TreeSelectionKeys>({})
-
-let previousComponent: Component | null = Player
+let previousComponent: any = Player;
 const selectedComponent = computed(() => {
-  const selectedNodeKey = Object.keys(selectedKey.value || {})[0]
-  const result = getSelectedComponent(selectedNodeKey)
+  const result = getSelectedComponent(selectedKey.value)
   if (result) previousComponent = result
   return result || previousComponent
-})
-
-let previousData: any = null
-const selectedData = computed(() => {
-  const selectedNodeKey = Object.keys(selectedKey.value || {})[0]
-  const findNode = (nodes: TreeNode[]): string | null => {
-    for (const node of nodes) {
-      if (node.key === selectedNodeKey) return node.data
-      if (node.children) {
-        const childResult = findNode(node.children)
-        if (childResult) return childResult
-      }
-    }
-    return null
-  }
-  const data = findNode(treeData.value)
-  if (data) previousData = data
-  return data || previousData
 })
 
 </script>
@@ -106,19 +80,20 @@ const selectedData = computed(() => {
     <div class="flex flex-column items-center">
       <h1 class="font-bold text-3xl">GroupMan</h1>
       <h2 class="font-medium text-gray-400 mt-1 mb-3">by <a href="https://github.com/Parmesaaan" target="_blank" rel="noopener noreferrer">Parmesaaan</a></h2>
-      <Tree v-model:selectionKeys="selectedKey" selection-mode="single" :value="treeData" />
+      <Divider layout="horizontal"/>
+      <PanelMenu :model="menuItems" class="w-64"/>
       <p class="mt-auto">Test</p>
     </div>
     <Divider layout="vertical" />
     <div>
-      <component :is="selectedComponent" :data="selectedData"/>
+      <component :is="selectedComponent"/>
     </div>
   </div>
 </template>
 
 <style scoped>
 .dashboard {
-  min-width: 900px;
+  min-width: 1000px;
   min-height: 550px;
   max-width: 1280px;
   max-height: 720px;

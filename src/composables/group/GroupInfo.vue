@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <p class="m-0">
-    Player info will go here
-  </p>
+
 </template>
 
 <style scoped>
