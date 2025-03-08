@@ -3,7 +3,7 @@ import PanelMenu from 'primevue/panelmenu';
 import Divider from "primevue/divider";
 import Player from "../composables/player/Player.vue";
 import {useStore} from "../stores";
-import {type Component, ref, shallowRef} from "vue";
+import {type Component, computed, ref, shallowRef} from "vue";
 import Group from "../composables/group/Group.vue";
 import type {MenuItem} from "primevue/menuitem";
 import PlayerNotes from "../composables/player/PlayerNotes.vue";
@@ -16,65 +16,69 @@ import {Group as GroupModel} from "../models";
 const store = useStore()
 const profile = store.profile!
 
-const menuItems = ref<MenuItem[]>([
-  {
-    label: profile.user.username,
-    icon: "pi pi-user",
-    command: () => selectedComponent.value = Player
-  },
-  {
-    label: "Tasks",
-    icon: "pi pi-list",
-    command: () => selectedComponent.value = PlayerTasks
-  },
-  {
-    label: "Notes",
-    icon: "pi pi-file",
-    command: () => selectedComponent.value = PlayerNotes
-  },
-  {
-    label: "Groups",
-    icon: "pi pi-users",
-    items: [
-      {
-        label: "My Groups",
-        icon: "pi pi-users",
-        items: profile.groups.map(group => ({
-          label: group.name,
+const menuItems = computed<MenuItem[]>(() => {
+  return [
+    {
+      label: profile.user.username,
+      icon: "pi pi-user",
+      command: () => selectedComponent.value = Player,
+      disabled: true
+    },
+    {
+      label: "Tasks",
+      icon: "pi pi-list",
+      command: () => selectedComponent.value = PlayerTasks
+    },
+    {
+      label: "Notes",
+      icon: "pi pi-file",
+      command: () => selectedComponent.value = PlayerNotes
+    },
+    {
+      label: "Groups",
+      icon: "pi pi-users",
+      disabled: true,
+      items: [
+        {
+          label: "My Groups",
           icon: "pi pi-users",
-          command: () => {
-            selectedComponent.value = Group
-            selectedGroup.value = group
-          }
-        })),
-      },
-      {
-        label: "Join Group",
-        icon: "pi pi-user-plus",
-        command: () => selectedComponent.value = GroupJoin
-      },
-      {
-        label: "New Group",
-        icon: "pi pi-plus-circle",
-        command: () => selectedComponent.value = GroupCreate
-      },
-    ]
-  },
-  {
-    label: "Utilities",
-    icon: "pi pi-wrench",
-    disabled: true
-  },
-  {
-    label: "Logout",
-    icon: "pi pi-sign-out",
-    key: "logout",
-    command: () => {
-      store.logout()
-      router.push("/login")
-    }
-  },
-])
+          items: profile.groups.map(group => ({
+            label: group.name,
+            icon: "pi pi-users",
+            command: () => {
+              selectedComponent.value = Group
+              selectedGroup.value = group
+            }
+          })),
+        },
+        {
+          label: "Join Group",
+          icon: "pi pi-user-plus",
+          command: () => selectedComponent.value = GroupJoin
+        },
+        {
+          label: "New Group",
+          icon: "pi pi-plus-circle",
+          command: () => selectedComponent.value = GroupCreate
+        },
+      ]
+    },
+    {
+      label: "Utilities",
+      icon: "pi pi-wrench",
+      disabled: true
+    },
+    {
+      label: "Logout",
+      icon: "pi pi-sign-out",
+      key: "logout",
+      command: () => {
+        store.logout()
+        router.push("/login")
+      }
+    },
+  ]
+})
 
 const selectedComponent = shallowRef<Component>()
 const selectedGroup = ref<GroupModel>()
@@ -91,7 +95,7 @@ const selectedGroup = ref<GroupModel>()
       <p class="font-medium text-gray-400 text-xs mt-auto">version 0.0.1-beta</p>
     </div>
     <Divider layout="vertical" />
-    <component :is="selectedComponent" :data="selectedGroup" class="flex-grow"/>
+    <component :is="selectedComponent" :data="selectedGroup" class="flex-grow overflow-hidden w-full"/>
   </div>
 </template>
 
@@ -99,9 +103,10 @@ const selectedGroup = ref<GroupModel>()
 .dashboard {
   min-width: 1100px;
   min-height: 550px;
-  max-width: 1280px;
-  max-height: 720px;
+  max-width: 1100px;
+  max-height: 550px;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 }
 </style>

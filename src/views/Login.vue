@@ -34,7 +34,7 @@ const login = async (event: Event) => {
 <template>
   <div class="flex justify-center items-center w-full">
     <Card>
-      <template #title>RS3 GIM Tracker</template>
+      <template #title>GroupMan</template>
       <template #subtitle>Login to continue</template>
       <template #content>
         <div class="flex flex-column gap-3 mt-3 mb-3">

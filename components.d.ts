@@ -10,10 +10,13 @@ declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
     Card: typeof import('primevue/card')['default']
+    Divider: typeof import('primevue/divider')['default']
     OverlayPanel: typeof import('primevue/overlaypanel')['default']
     Panel: typeof import('primevue/panel')['default']
+    PanelMenu: typeof import('primevue/panelmenu')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollPanel: typeof import('primevue/scrollpanel')['default']
     TabPanel: typeof import('primevue/tabpanel')['default']
     TabPanels: typeof import('primevue/tabpanels')['default']
     Tag: typeof import('primevue/tag')['default']

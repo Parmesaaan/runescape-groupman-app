@@ -11,11 +11,21 @@ export const useStore = defineStore('auth', {
 
     actions: {
         async login(credentials: Credentials) {
-            this.tokenPair = await BackendService.login(credentials)
+            try {
+                this.tokenPair = await BackendService.login(credentials)
+            } catch (e) {
+                return
+            }
 
             if(this.tokenPair) {
                 this.isAuthenticated = true
-                this.profile = await BackendService.getProfile()
+
+                try {
+                    this.profile = await BackendService.getProfile()
+                } catch (e) {
+                    return
+                }
+
                 localStorage.setItem('token', this.tokenPair.token)
                 localStorage.setItem('refreshToken', this.tokenPair.refreshToken)
             }
@@ -30,16 +40,40 @@ export const useStore = defineStore('auth', {
             localStorage.removeItem('refreshToken')
         },
 
+        getProfile() {
+            return this.profile
+        },
+        
+        async updateProfile() {
+            if (!this.isAuthenticated) return
+
+            try {
+                this.profile = await BackendService.getProfile()
+            } catch (e) {
+                return
+            }
+        },
+
         async initialize() {
             const storedToken = localStorage.getItem('token')
             const storedRefreshToken = localStorage.getItem('refreshToken')
 
             if (storedToken && storedRefreshToken) {
-                this.tokenPair = await BackendService.refreshToken(storedRefreshToken)
+                try {
+                    this.tokenPair = await BackendService.refreshToken(storedRefreshToken)
+                } catch (e) {
+                    return
+                }
 
                 if (this.tokenPair) {
                     this.isAuthenticated = true
-                    this.profile = await BackendService.getProfile()
+
+                    try {
+                        this.profile = await BackendService.getProfile()
+                    } catch (e) {
+                        return
+                    }
+
                     localStorage.setItem('token', this.tokenPair.token)
                     localStorage.setItem('refreshToken', this.tokenPair.refreshToken)
                 }

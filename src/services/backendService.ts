@@ -12,10 +12,11 @@ export class BackendService {
       )
     } catch (e) {
       console.error('Signup error:', e)
+      throw Error
     }
   }
 
-  public static async login(credentials: Credentials): Promise<TokenPair | null> {
+  public static async login(credentials: Credentials): Promise<TokenPair> {
     try {
       const response = await axios.post(
         BASE_URL.concat(API_ROUTES.USERS.ACCESS.LOGIN),
@@ -25,11 +26,11 @@ export class BackendService {
       return { token, refreshToken } as TokenPair
     } catch (e) {
       console.error('Login error:', e)
-      return null
+      throw Error
     }
   }
 
-  public static async refreshToken(refresh: string): Promise<TokenPair | null> {
+  public static async refreshToken(refresh: string): Promise<TokenPair> {
     try {
       const response = await axios.post(
         BASE_URL.concat(API_ROUTES.USERS.ACCESS.REFRESH_TOKEN),
@@ -39,17 +40,17 @@ export class BackendService {
       return { token, refreshToken }
     } catch (e) {
       console.error("Refresh token error:", e)
-      return null
+      throw Error
     }
   }
 
-  public static async getProfile(): Promise<Profile | null> {
+  public static async getProfile(): Promise<Profile> {
     const store = useStore()
     const token = store.tokenPair?.token
 
     if (!token) {
       console.log('Cannot fetch profile, no auth token present')
-      return null
+      throw Error
     }
 
     try {
@@ -61,17 +62,17 @@ export class BackendService {
       return response.data as Profile
     } catch (e) {
       console.error('Get profile error:', e)
-      return null
+      throw Error
     }
   }
 
-  public static async updateTask(task: Task): Promise<Task | null> {
+  public static async updateTask(task: Task): Promise<Task> {
     const store = useStore()
     const token = store.tokenPair?.token
 
     if (!token) {
       console.log('Cannot update task, no auth token present')
-      return null
+      throw Error
     }
 
     try {
@@ -88,7 +89,7 @@ export class BackendService {
       return response.data as Task
     } catch (e) {
       console.error('Update task error:', e)
-      return null
+      throw Error
     }
   }
 }
