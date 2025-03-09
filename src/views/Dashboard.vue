@@ -21,8 +21,7 @@ const menuItems = computed<MenuItem[]>(() => {
     {
       label: profile.user.username,
       icon: "pi pi-user",
-      command: () => selectedComponent.value = Player,
-      disabled: true
+      command: () => selectedComponent.value = Player
     },
     {
       label: "Tasks",
@@ -80,7 +79,7 @@ const menuItems = computed<MenuItem[]>(() => {
   ]
 })
 
-const selectedComponent = shallowRef<Component>()
+const selectedComponent = shallowRef<Component>(Player)
 const selectedGroup = ref<GroupModel>()
 
 </script>
@@ -91,7 +90,7 @@ const selectedGroup = ref<GroupModel>()
       <h1 class="font-bold text-3xl">GroupMan</h1>
       <h2 class="font-medium text-gray-400 mt-1 mb-3">by <a href="https://github.com/Parmesaaan" target="_blank" rel="noopener noreferrer">Parmesaaan</a></h2>
       <Divider layout="horizontal"/>
-      <PanelMenu :model="menuItems" class="w-64"/>
+      <PanelMenu :model="menuItems" class="w-56"/>
       <p class="font-medium text-gray-400 text-xs mt-auto">version 0.0.1-beta</p>
     </div>
     <Divider layout="vertical" />

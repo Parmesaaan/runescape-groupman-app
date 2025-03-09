@@ -5,7 +5,19 @@ import {useStore} from "../stores";
 
 const routes: Array<RouteRecordRaw> = [
     { path: '/login', name: 'Login', component: Login },
-    { path: '/', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    { path: '/dash', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    {
+        path: '/',
+        name: 'Home',
+        redirect: () => {
+            const store = useStore()
+            if (store.isAuthenticated) {
+                return '/dash'
+            } else {
+                return '/login'
+            }
+        }
+    },
 ]
 
 const useRouter = createRouter({
@@ -19,7 +31,7 @@ useRouter.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !store.isAuthenticated) {
         next("/login")
     } else if (to.path === '/login' && store.isAuthenticated) {
-        next('/')
+        next('/dash')
     } else {
         next()
     }

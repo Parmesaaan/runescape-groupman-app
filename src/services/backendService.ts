@@ -1,4 +1,4 @@
-import {Credentials, Profile, Task, TokenPair} from "../models";
+import {Credentials, Profile, Task, TaskType, TokenPair} from "../models";
 import axios from "axios";
 import {API_ROUTES, BASE_URL} from "../constants";
 import {useStore} from "../stores";
@@ -66,7 +66,36 @@ export class BackendService {
     }
   }
 
-  public static async updateTask(task: Task): Promise<Task> {
+  public static async createTask(taskType: TaskType, title: string, description?:string): Promise<Task> {
+    const store = useStore()
+    const token = store.tokenPair?.token
+
+    if (!token) {
+      console.log('Cannot create task, no auth token present')
+      throw Error
+    }
+
+    try {
+      const response = await axios.put(
+        BASE_URL.concat(API_ROUTES.USERS.TASKS.CREATE_TASK),
+        {
+          title: title,
+          description: description,
+          taskType: taskType
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      return response.data as Task
+    } catch (e) {
+      console.error('Update task error:', e)
+      throw Error
+    }
+  }
+
+  public static async updateTask(taskId: string, updates): Promise<Task> {
     const store = useStore()
     const token = store.tokenPair?.token
 
@@ -77,10 +106,8 @@ export class BackendService {
 
     try {
       const response = await axios.put(
-        BASE_URL.concat(API_ROUTES.USERS.TASKS.UPDATE_TASK).concat("?taskId=" + task.id),
-        {
-          completed: true
-        },
+        BASE_URL.concat(API_ROUTES.USERS.TASKS.UPDATE_TASK).replace(':taskId', taskId),
+        updates,
         {
           headers: {
             Authorization: `Bearer ${token}`

@@ -6,6 +6,7 @@ export const useStore = defineStore('auth', {
     state: () => ({
         isAuthenticated: false,
         tokenPair: null as TokenPair | null,
+        lastTokenFetch: null as Date | null,
         profile: null as Profile | null
     }),
 
@@ -14,7 +15,7 @@ export const useStore = defineStore('auth', {
             try {
                 this.tokenPair = await BackendService.login(credentials)
             } catch (e) {
-                return
+                return false
             }
 
             if(this.tokenPair) {
@@ -23,12 +24,14 @@ export const useStore = defineStore('auth', {
                 try {
                     this.profile = await BackendService.getProfile()
                 } catch (e) {
-                    return
+                    return false
                 }
 
                 localStorage.setItem('token', this.tokenPair.token)
                 localStorage.setItem('refreshToken', this.tokenPair.refreshToken)
             }
+
+            return true
         },
 
         logout() {
@@ -62,6 +65,8 @@ export const useStore = defineStore('auth', {
                 try {
                     this.tokenPair = await BackendService.refreshToken(storedRefreshToken)
                 } catch (e) {
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('refreshToken')
                     return
                 }
 
@@ -71,6 +76,9 @@ export const useStore = defineStore('auth', {
                     try {
                         this.profile = await BackendService.getProfile()
                     } catch (e) {
+                        this.isAuthenticated = false
+                        localStorage.removeItem('token')
+                        localStorage.removeItem('refreshToken')
                         return
                     }
 

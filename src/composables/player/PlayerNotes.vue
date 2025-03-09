@@ -48,7 +48,7 @@ const editNote = async () => {
 <template>
   <div class="flex flex-row w-full overflow-hidden">
     <div class="flex flex-column items-center gap-2 min-w-[30%] max-w-[30%] max-h-100">
-      <span class="text-xl font-bold mt-2">Your Notes</span>
+      <span class="text-xl font-bold mt-2">Your Notes ({{ notes.length }})</span>
       <Divider layout="horizontal"/>
       <p v-if="!notes.length" class="flex flex-grow justify-center text-center">You don't have any notes</p>
       <ScrollPanel class="w-full h-full pr-3">
