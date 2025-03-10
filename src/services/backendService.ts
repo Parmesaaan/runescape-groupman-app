@@ -1,4 +1,4 @@
-import {Credentials, Profile, Task, TaskType, TokenPair} from "../models"
+import {Credentials, Profile, Task, TaskType, TokenPair, UserNote} from "../models"
 import axios from "axios"
 import {API_ROUTES, BASE_URL} from "../constants"
 import {useStore} from "../stores"
@@ -146,7 +146,7 @@ export class BackendService {
   }
 
   /** User Notes **/
-  public static async createUserNote(title: string, contents:string): Promise<Note> {
+  public static async createUserNote(title: string, contents:string): Promise<UserNote> {
     const store = useStore()
     const token = store.tokenPair?.token
 
@@ -167,14 +167,14 @@ export class BackendService {
             Authorization: `Bearer ${token}`
           }
         })
-      return response.data as Note
+      return response.data as UserNote
     } catch (e) {
       console.error('Create user note error:', e)
       throw Error
     }
   }
 
-  public static async updateUserNote(userNoteId: string, updates: Record<string,any>): Promise<Note> {
+  public static async updateUserNote(userNoteId: string, updates: Record<string,any>): Promise<UserNote> {
     const store = useStore()
     const token = store.tokenPair?.token
 
@@ -192,7 +192,7 @@ export class BackendService {
             Authorization: `Bearer ${token}`
           }
         })
-      return response.data as Note
+      return response.data as UserNote
     } catch (e) {
       console.error('Update user note error:', e)
       throw Error
