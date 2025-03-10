@@ -101,9 +101,9 @@ const selectedGroup = ref<GroupModel>()
 <style scoped>
 .dashboard {
   min-width: 1100px;
-  min-height: 550px;
+  min-height: 600px;
   max-width: 1100px;
-  max-height: 550px;
+  max-height: 600px;
   display: flex;
   flex-direction: row;
   overflow: hidden;

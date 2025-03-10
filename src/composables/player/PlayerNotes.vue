@@ -59,10 +59,10 @@ const editNote = async () => {
     <div class="flex flex-column flex-grow gap-2">
       <div class="flex flex-wrap items-center justify-between">
         <span>
-          <Button label="New Note" icon="pi pi-plus" class="p-button-sm mr-2" @click="newNote" raised />
-          <Button label="Edit Note" icon="pi pi-pencil" class="p-button-sm mr-2" :disabled="!selectedNote" @click="editNote" raised   />
+          <Button label="New Note" icon="pi pi-plus" class="p-button-sm mr-2" @click="newNote" outlined raised />
+          <Button label="Edit Note" icon="pi pi-pencil" class="p-button-sm mr-2" :disabled="!selectedNote" @click="editNote" outlined raised   />
         </span>
-        <Button label="Refresh" icon="pi pi-refresh" class="p-button-sm" @click="refreshNotes"  raised />
+        <Button label="Refresh" icon="pi pi-refresh" class="p-button-sm" @click="refreshNotes" outlined raised />
       </div>
       <p v-if="!selectedNote" class="flex flex-grow items-center justify-center text-xl">No note selected</p>
       <div v-if="selectedNote" class="flex flex-grow bg-gray-700 rounded-xl overflow-hidden">

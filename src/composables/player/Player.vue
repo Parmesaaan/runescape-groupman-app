@@ -33,15 +33,19 @@ onMounted(() => {
   <div class="flex flex-column w-full overflow-hidden items-center justify-center">
     <span class="text-2xl">Welcome</span>
     <span class="font-bold text-4xl">{{ user.username }}</span>
-    <div class="flex flex-grow flex-row w-full items-center justify-center gap-6">
+    <div class="flex flex-grow flex-row w-full items-center justify-center gap-4">
       <div class="flex flex-column items-center border-2 border-gray-700 rounded-2xl w-[30%] h-[80%]">
         <div class="flex h-[44px] w-[100%] bg-gray-700 rounded-t-xl items-center justify-center">
-          <span class="font-medium text-2xl under">Stats</span>
+          <span class="font-medium text-2xl under">Info</span>
         </div>
         <div class="flex flex-column flex-grow justify-center p-2">
           <div class="flex flex-column items-center line-height-2">
             <span class="text-gray-400">Available Tasks</span>
             <span>{{ user.tasks.filter(t => isTaskAvailable(t)).length || 'None' }}</span>
+          </div>
+          <div class="flex flex-column items-center line-height-2 mt-2">
+            <span class="text-gray-400">Joined Groups</span>
+            <span>{{ store.getProfile().groups.length || 'None' }}</span>
           </div>
           <div class="flex flex-column items-center line-height-2 mt-2">
             <span class="text-gray-400">Account Created</span>
@@ -63,7 +67,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex flex-column items-center w-[30%] h-[80%]">
-        <div class="flex flex-column items-center border-2 border-gray-700 rounded-2xl w-full">
+        <div class="flex flex-column items-center border-2 border-gray-700 rounded-2xl w-full h-full mb-4">
           <div class="flex h-[44px] w-[100%] bg-gray-700 rounded-t-xl items-center justify-center">
             <span class="font-medium text-2xl under">Links</span>
           </div>
@@ -74,7 +78,9 @@ onMounted(() => {
             <a class="flex justify-center" href="https://runescape.wiki/w/Revolution/Bars" target="_blank" rel="noopener noreferrer">
               <Button label="Revolution Bars" icon="pi pi-globe" class="p-button-sm" severity="secondary" raised/>
             </a>
-
+            <a class="flex justify-center" href="https://runescape.wiki/w/Rune_Goldberg_Machine#Current_combinations" target="_blank" rel="noopener noreferrer">
+              <Button label="Vis Wax Runes" icon="pi pi-globe" class="p-button-sm" severity="secondary" raised/>
+            </a>
           </div>
         </div>
         <div class="flex flex-column items-center border-2 border-gray-700 rounded-2xl w-full mt-auto">

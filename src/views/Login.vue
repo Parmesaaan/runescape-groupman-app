@@ -9,7 +9,7 @@ import useRouter from "../router";
 
 const store = useStore()
 
-const toast = useToast();
+const toast = useToast()
 const signupMode = ref<boolean>(false)
 
 const resolver = ({ values }) => {
