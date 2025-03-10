@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import {Group as GroupModel} from "../../models";
 
 const props = defineProps<{

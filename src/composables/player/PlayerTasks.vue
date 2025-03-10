@@ -8,6 +8,8 @@ import {computed, onMounted, ref} from "vue"
 import {formatDateTime, isTaskAvailable} from "../../utils"
 import {BackendService} from "../../services"
 import {useToast} from "primevue/usetoast"
+import {useConfirm} from "primevue";
+import FloatLabel from "primevue/floatlabel";
 
 enum TaskStatus {
   COMPLETED = 'Completed',
@@ -16,6 +18,7 @@ enum TaskStatus {
 
 const store = useStore()
 const toast = useToast()
+const confirm = useConfirm()
 
 const tasks = computed(() => {
   return store.getProfile().user.tasks.map(task => ({
@@ -34,6 +37,11 @@ const tasks = computed(() => {
     return a.title.localeCompare(b.title)
   })
 })
+const selectedTaskSafe = computed(() => selectedTask.value ?? {
+  title: null,
+  description: null,
+  taskType: null
+})
 const expandedRows = ref()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -43,11 +51,84 @@ const filters = ref({
 })
 const statuses = ref([TaskStatus.INCOMPLETE, TaskStatus.COMPLETED])
 const taskTypes = ref([TaskType.DAILY, TaskType.WEEKLY, TaskType.MONTHLY])
+const dialogVisible = ref<boolean>(false)
+const selectedTask = ref<Task>()
 const loading = ref(true)
 
 onMounted(() => {
   loading.value = false
 })
+
+const resolver = (data) => {
+  const values = data.values
+  const newMode = !selectedTask.value
+  const errors = {
+    title: [],
+    description: [],
+    taskType: [],
+  }
+
+  if (newMode && !values.title) errors.title.push({ message: 'Task title is required.'})
+  if (newMode && !values.taskType) errors.taskType.push({ message: 'Task type is required.'})
+
+  if (values.title) {
+    if (values.title.length > 24) errors.title.push({ message: 'Task title cannot exceed 24 characters' })
+  }
+
+  return {
+    values,
+    errors
+  }
+}
+
+const onFormSubmit = async (form) => {
+  if (form.valid) {
+    dialogVisible.value = false
+    loading.value = true
+
+    if (selectedTask.value) {
+      const updates = {
+        title: form.values.title,
+        description: form.values.description,
+        taskType: form.values.taskType
+      }
+      const result = await BackendService.updateTask(selectedTask.value.id, updates)
+      if (result) {
+        toast.add({
+          severity: 'info',
+          summary: `Updated task: ${selectedTask.value.title}`,
+          life: 3000
+        })
+        await refreshTasks()
+      } else {
+        toast.add({
+          severity: 'error',
+          summary: `Error updating task: ${selectedTask.value.title}`,
+          life: 3000
+        })
+      }
+    } else {
+      const result = await BackendService.createTask(form.values.taskType, form.values.title, form.values.description)
+      if (result) {
+        toast.add({
+          severity: 'info',
+          summary: `Created task: ${form.values.title}`,
+          life: 3000
+        })
+        await refreshTasks()
+      } else {
+        toast.add({
+          severity: 'error',
+          summary: `Error updating task: ${form.values.title}`,
+          life: 3000
+        })
+      }
+    }
+
+    loading.value = false
+  }
+}
+
 
 const getStatusValue = (task: Task): string => {
   const isAvailable = isTaskAvailable(task)
@@ -58,6 +139,10 @@ const getStatusSeverity = (taskStatus: TaskStatus): string => {
   return taskStatus === TaskStatus.INCOMPLETE ? 'danger' : 'success'
 }
 
+const getDialogHeader = (): string => {
+  return selectedTask.value ? 'Edit '.concat(selectedTask.value.title) : 'Create Task'
+}
+
 const refreshTasks = async () => {
   loading.value = true
   await store.updateProfile()
@@ -65,15 +150,52 @@ const refreshTasks = async () => {
 }
 
 const newTask = async () => {
-  // TODO: Create new task
+  selectedTask.value = undefined
+  dialogVisible.value = true
 }
 
 const editTask = async (task: Task) => {
-  // TODO: Edit task
+  selectedTask.value = task
+  dialogVisible.value = true
 }
 
 const deleteTask = async (task: Task) => {
-  // TODO: Delete task
+  confirm.require({
+    header: 'Are you sure?',
+    message: `You are about to delete task ${task.title}?`,
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Delete',
+      severity: 'danger'
+    },
+    accept: async () => {
+      loading.value = true
+      const result = await BackendService.deleteTask(task.id)
+      if (result) {
+        toast.add({
+          severity: 'info',
+          summary: `Deleted task: ${task.title}`,
+          life: 3000
+        })
+        await refreshTasks()
+      } else {
+        toast.add({
+          severity: 'error',
+          summary: `Error deleting task: ${task.title}`,
+          life: 3000
+        })
+      }
+      loading.value = false
+    },
+    reject: () => {
+
+    }
+  })
 }
 
 const completedTask = async (event, task) => {
@@ -94,6 +216,8 @@ const completedTask = async (event, task) => {
 
 <template>
   <div class="flex flex-grow">
+    <ConfirmDialog/>
+    <Toast/>
     <DataTable
         :value="tasks"
         v-model:filters="filters"
@@ -169,15 +293,40 @@ const completedTask = async (event, task) => {
       </Column>
       <template #expansion="slotProps">
         <div class="flex flex-column flex-grow p-4 gap-2 border-2 border-gray-700 rounded-xl">
-          <h1 class="font-bold line-height-2">{{ slotProps.data.title }}</h1>
-          <span class="mt-2 line-height-2">
-              <p v-if="slotProps.data.description">{{ slotProps.data.description }}</p>
-              <p v-if="!slotProps.data.description" class="text-gray-400">This task has no description.</p>
+          <h1 class="font-bold text-lg line-height-2">{{ slotProps.data.title }}</h1>
+          <span class="mt-1 line-height-2">
+              <span v-if="slotProps.data.description">{{ slotProps.data.description }}</span>
+              <span v-if="!slotProps.data.description" class="text-gray-400">This task has no description.</span>
             </span>
           <p class="text-gray-400 text-sm mt-2 line-height-1">Last completed: {{ slotProps.data.lastCompleted ? formatDateTime(slotProps.data.lastCompleted) : 'Never' }}</p>
         </div>
       </template>
     </DataTable>
+    <Dialog v-model:visible="dialogVisible" :header="getDialogHeader()" modal>
+      <Form v-slot="$form" :resolver @submit="onFormSubmit" class="flex flex-col w-full">
+        <div class="flex flex-col gap-2 p-2">
+          <div class="flex flex-col line-height-2 gap-2">
+            <span>Title</span>
+            <InputText id="title" name="title" type="text" size="small" v-model="selectedTaskSafe.title" fluid />
+            <Message v-if="$form.title?.invalid" severity="error" variant="simple" :life="3000">{{ $form.title.error?.message }}</Message>
+          </div>
+          <div class="flex flex-col line-height-2 gap-2">
+            <span>Type</span>
+            <Select id="taskType" name="taskType" type="text" v-model="selectedTaskSafe.taskType" :options="taskTypes" optionValue="" placeholder="Select One" style="min-width: 12rem">
+              <template #option="slotProps">
+                <Tag :value="slotProps.option" severity="secondary" />
+              </template>
+            </Select>
+            <Message v-if="$form.taskType?.invalid" severity="error" size="small" variant="simple" :life="3000">{{ $form.taskType.error?.message }}</Message>
+          </div>
+          <div class="flex flex-col line-height-2 gap-2">
+            <span>Description</span>
+            <Textarea id="description" name="description" v-model="selectedTaskSafe.description" rows="5" cols="30" style="resize: none; width: 30vh; min-width: 200px; line-height: 1.4" fluid autoResize />
+          </div>
+          <Button type="submit" severity="primary" label="Confirm" class="p-button-lg mt-2"/>
+        </div>
+      </Form>
+    </Dialog>
   </div>
 </template>
 

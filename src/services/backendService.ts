@@ -76,7 +76,7 @@ export class BackendService {
     }
 
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         BASE_URL.concat(API_ROUTES.USERS.TASKS.CREATE_TASK),
         {
           title: title,
@@ -116,6 +116,30 @@ export class BackendService {
       return response.data as Task
     } catch (e) {
       console.error('Update task error:', e)
+      throw Error
+    }
+  }
+
+  public static async deleteTask(taskId: string): Promise<boolean> {
+    const store = useStore()
+    const token = store.tokenPair?.token
+
+    if (!token) {
+      console.log('Cannot delete task, no auth token present')
+      throw Error
+    }
+
+    try {
+      const response = await axios.delete(
+        BASE_URL.concat(API_ROUTES.USERS.TASKS.DELETE_TASK).replace(':taskId', taskId),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      return response.status < 300
+    } catch (e) {
+      console.error('Delete task error:', e)
       throw Error
     }
   }

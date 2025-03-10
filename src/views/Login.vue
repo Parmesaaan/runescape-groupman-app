@@ -12,20 +12,17 @@ const store = useStore()
 const toast = useToast()
 const signupMode = ref<boolean>(false)
 
-const resolver = ({ values }) => {
-  const errors: {username?: string, password?: string, confirmPassword: string} = {}
-
-  if (!values.username) {
-    errors.username = [{ message: 'Username is required.' }]
+const resolver = (data) => {
+  const values = data.values
+  const errors = {
+    username: [],
+    password: [],
+    confirmPassword: [],
   }
 
-  if (!values.password) {
-    errors.password = [{ message: 'Password is required.' }]
-  }
-
-  if (signupMode.value && !values.confirmPassword) {
-    errors.confirmPassword = [{ message: 'Confirm your password.' }]
-  }
+  if (!values.username) errors.username.push({ message: 'Username is required.' })
+  if (!values.password) errors.password.push({ message: 'Password is required.' })
+  if (signupMode.value && !values.confirmPassword) errors.confirmPassword.push({ message: 'Confirm your password.' })
 
   return {
     values,
@@ -34,7 +31,6 @@ const resolver = ({ values }) => {
 }
 
 const onFormSubmit = async (form) => {
-  console.log("Form: " + JSON.stringify(form))
   if (form.valid) {
     if (signupMode.value) {
       try {

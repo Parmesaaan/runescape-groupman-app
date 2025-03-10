@@ -6,11 +6,15 @@ import {computed, ref} from "vue";
 import type {MenuItem} from "primevue/menuitem";
 import {UserNote} from "../../models";
 import {formatDateTime} from "../../utils";
+import {useConfirm} from "primevue";
 
 const store = useStore()
+const confirm = useConfirm()
+
 const notes = computed(() => store.getProfile().user.notes)
 
 const selectedNote = ref<UserNote>()
+const dialogVisible = ref<boolean>(false)
 
 const menuItems = computed<MenuItem[]>(() => {
   return notes.value.map(n => {
@@ -32,16 +36,21 @@ const formatTitle = (name: string, max: number = 24): string => {
 }
 
 const refreshNotes = async () => {
+  delete selectedNote.value
   await store.updateProfile()
-  selectedNote.value = null
 }
 
-const newNote = async () => {
-  // TODO: Create new note
+const createNote = async () => {
+  delete selectedNote.value
+  dialogVisible.value = true
 }
 
 const editNote = async () => {
-  // TODO: Edit note
+  dialogVisible.value = true
+}
+
+const deleteNote = async () => {
+  dialogVisible.value = true
 }
 </script>
 
@@ -59,8 +68,12 @@ const editNote = async () => {
     <div class="flex flex-column flex-grow gap-2">
       <div class="flex flex-wrap items-center justify-between">
         <span>
-          <Button label="New Note" icon="pi pi-plus" class="p-button-sm mr-2" @click="newNote" outlined raised />
-          <Button label="Edit Note" icon="pi pi-pencil" class="p-button-sm mr-2" :disabled="!selectedNote" @click="editNote" outlined raised   />
+          <Button label="New Note" icon="pi pi-plus" class="p-button-sm mr-2" @click="createNote" outlined raised />
+          <Button icon="pi pi-pencil" class="p-button-sm mr-2" :disabled="!selectedNote" @click="editNote" outlined raised />
+          <span>
+            <Button icon="pi pi-trash" class="p-button-sm mr-2" :disabled="!selectedNote" severity="danger" @click="deleteNote" outlined raised />
+            <ConfirmDialog></ConfirmDialog>
+          </span>
         </span>
         <Button label="Refresh" icon="pi pi-refresh" class="p-button-sm" @click="refreshNotes" outlined raised />
       </div>

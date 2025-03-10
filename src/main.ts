@@ -5,6 +5,7 @@ import 'primeicons/primeicons.css'
 import { createApp } from "vue"
 import PrimeVue from "primevue/config"
 import Aura from "@primeuix/themes/aura"
+import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
 import App from "./App.vue"
 import useRouter from "./router";
@@ -19,6 +20,7 @@ await authStore.initialize()
 
 app.use(useRouter)
 app.use(ToastService)
+app.use(ConfirmationService)
 app.use(PrimeVue, {
     theme: {
         preset: Aura,
