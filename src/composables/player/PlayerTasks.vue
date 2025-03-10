@@ -158,7 +158,7 @@ const editTask = async (task: Task) => {
 const deleteTask = async (task: Task) => {
   confirm.require({
     header: 'Are you sure?',
-    message: `You are about to delete task ${task.title}?`,
+    message: `You are about to delete task ${task.title}`,
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {
       label: 'Cancel',

@@ -152,7 +152,7 @@ const editNote = async () => {
 const deleteNote = async () => {
   confirm.require({
     header: 'Are you sure?',
-    message: `You are about to delete note ${selectedNote.value?.title}?`,
+    message: `You are about to delete note ${selectedNote.value?.title}`,
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {
       label: 'Cancel',
