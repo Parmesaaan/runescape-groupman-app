@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import {Credentials, Profile, TokenPair} from "../models";
-import {BackendService} from "../services";
+import { defineStore } from 'pinia'
+import {Credentials, Profile, TokenPair} from "../models"
+import {BackendService} from "../services"
 
 export const useStore = defineStore('auth', {
     state: () => ({

@@ -4,12 +4,11 @@ import DataTable from "primevue/datatable"
 import Column from "primevue/column"
 import { FilterMatchMode } from '@primevue/core/api'
 import {Task, TaskType} from "../../models"
-import {computed, onMounted, ref} from "vue"
+import {computed, ref} from "vue"
 import {formatDateTime, isTaskAvailable} from "../../utils"
 import {BackendService} from "../../services"
 import {useToast} from "primevue/usetoast"
-import {useConfirm} from "primevue";
-import FloatLabel from "primevue/floatlabel";
+import {useConfirm} from "primevue"
 
 enum TaskStatus {
   COMPLETED = 'Completed',

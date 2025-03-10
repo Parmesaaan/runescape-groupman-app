@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import ScrollPanel from 'primevue/scrollpanel';
-import PanelMenu from 'primevue/panelmenu';
-import {useStore} from "../../stores";
-import {computed, ref} from "vue";
-import type {MenuItem} from "primevue/menuitem";
-import {UserNote} from "../../models";
-import {formatDateTime} from "../../utils";
-import {useConfirm} from "primevue";
-import {useToast} from "primevue/usetoast";
-import {BackendService} from "../../services";
+import ScrollPanel from 'primevue/scrollpanel'
+import PanelMenu from 'primevue/panelmenu'
+import {useStore} from "../../stores"
+import {computed, ref} from "vue"
+import type {MenuItem} from "primevue/menuitem"
+import {UserNote} from "../../models"
+import {formatDateTime} from "../../utils"
+import {useConfirm} from "primevue"
+import {useToast} from "primevue/usetoast"
+import {BackendService} from "../../services"
 
 const store = useStore()
 const toast = useToast()

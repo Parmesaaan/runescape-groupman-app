@@ -1,6 +1,6 @@
 import {Task, TaskType} from "../models"
 import {differenceInSeconds, formatDistanceToNowStrict} from "date-fns"
-import { differenceInDays, differenceInHours, differenceInMinutes } from "date-fns";
+import { differenceInDays, differenceInHours, differenceInMinutes } from "date-fns"
 
 export const formatDateTime = (dateString: string): string => {
   const date = new Date(dateString)
@@ -9,7 +9,7 @@ export const formatDateTime = (dateString: string): string => {
 
 export function isTaskAvailable(task: Task): boolean {
   if (!task.lastCompleted) {
-    return true; // Task has never been completed, so it's available
+    return true // Task has never been completed, so it's available
   }
 
   const currentDate: Date = new Date()

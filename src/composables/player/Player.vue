@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {useStore} from "../../stores";
-import {computed, onMounted, ref} from "vue";
+import {useStore} from "../../stores"
+import {computed, onMounted, ref} from "vue"
 import {
   formatDateTime,
   getDailyResetCountdown,
   getMonthlyResetCountdown,
   getWeeklyResetCountdown,
   isTaskAvailable
-} from "../../utils";
+} from "../../utils"
 
 const store = useStore()
 const user = computed(() => store.getProfile().user)
 
-const dailyCountdown = ref("");
-const weeklyCountdown = ref("");
-const monthlyCountdown = ref("");
+const dailyCountdown = ref("")
+const weeklyCountdown = ref("")
+const monthlyCountdown = ref("")
 
 const updateCountdowns = () => {
   dailyCountdown.value = getDailyResetCountdown()

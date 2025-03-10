@@ -1,7 +1,7 @@
-import {Credentials, Profile, Task, TaskType, TokenPair} from "../models";
-import axios from "axios";
-import {API_ROUTES, BASE_URL} from "../constants";
-import {useStore} from "../stores";
+import {Credentials, Profile, Task, TaskType, TokenPair} from "../models"
+import axios from "axios"
+import {API_ROUTES, BASE_URL} from "../constants"
+import {useStore} from "../stores"
 
 export class BackendService {
   public static async signup(credentials: Credentials) {

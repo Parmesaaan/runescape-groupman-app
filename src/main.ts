@@ -8,11 +8,11 @@ import Aura from "@primeuix/themes/aura"
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
 import App from "./App.vue"
-import useRouter from "./router";
-import {createPinia} from "pinia";
+import useRouter from "./router"
+import {createPinia} from "pinia"
 import {useStore} from "./stores"
 
-const app = createApp(App);
+const app = createApp(App)
 app.use(createPinia())
 
 const authStore = useStore()
@@ -29,6 +29,6 @@ app.use(PrimeVue, {
             prefix: 'p',
         },
     }
-});
+})
 
-app.mount("#app");
+app.mount("#app")

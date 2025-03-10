@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
-import {useStore} from "../stores";
+import {useStore} from "../stores"
 
 const routes: Array<RouteRecordRaw> = [
     { path: '/login', name: 'Login', component: Login },

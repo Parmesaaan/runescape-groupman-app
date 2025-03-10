@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Group as GroupModel} from "../../models";
+import {Group as GroupModel} from "../../models"
 
 const props = defineProps<{
   data: GroupModel
