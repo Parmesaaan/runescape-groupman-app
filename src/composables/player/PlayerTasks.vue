@@ -2,7 +2,7 @@
 import {useStore} from "../../stores"
 import DataTable from "primevue/datatable"
 import Column from "primevue/column"
-import { FilterMatchMode } from '@primevue/core/api'
+import {FilterMatchMode} from '@primevue/core/api'
 import {Task, TaskType} from "../../models"
 import {computed, ref} from "vue"
 import {formatDateTime, isTaskAvailable} from "../../utils"

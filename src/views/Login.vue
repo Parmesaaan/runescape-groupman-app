@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from "vue"
 import {useStore} from "../stores"
-import { Form } from '@primevue/forms'
+import {Form} from '@primevue/forms'
 import {useToast} from "primevue/usetoast"
 import FloatLabel from "primevue/floatlabel"
 import {BackendService} from "../services"

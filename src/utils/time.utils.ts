@@ -1,6 +1,11 @@
 import {Task, TaskType} from "../models"
-import {differenceInSeconds, formatDistanceToNowStrict} from "date-fns"
-import { differenceInDays, differenceInHours, differenceInMinutes } from "date-fns"
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+  formatDistanceToNowStrict
+} from "date-fns"
 
 export const formatDateTime = (dateString: string): string => {
   const date = new Date(dateString)

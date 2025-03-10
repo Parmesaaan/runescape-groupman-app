@@ -2,7 +2,7 @@ import "./style.css"
 import 'primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
 
-import { createApp } from "vue"
+import {createApp} from "vue"
 import PrimeVue from "primevue/config"
 import Aura from "@primeuix/themes/aura"
 import ConfirmationService from 'primevue/confirmationservice'
