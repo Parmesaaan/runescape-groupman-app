@@ -87,7 +87,7 @@ export const formatCountdown = (targetDate: Date): string => {
   const formattedSeconds = String(diffSeconds).padStart(2, '0') // Pad seconds with leading zero if necessary
 
   if (diffDays > 0) {
-    return `${diffDays} days`
+    return `${diffDays} day${diffDays > 1 ? 's' : ''}`
   } else if (diffHours > 0) {
     return `${diffHours}${diffMinutes > 0 ? `:${formattedMinutes}` : ''} hours`
   } else if (diffMinutes > 0) {

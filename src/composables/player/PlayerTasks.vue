@@ -53,11 +53,7 @@ const statuses = ref([TaskStatus.INCOMPLETE, TaskStatus.COMPLETED])
 const taskTypes = ref([TaskType.DAILY, TaskType.WEEKLY, TaskType.MONTHLY])
 const dialogVisible = ref<boolean>(false)
 const selectedTask = ref<Task>()
-const loading = ref(true)
-
-onMounted(() => {
-  loading.value = false
-})
+const loading = ref(false)
 
 const resolver = (data) => {
   const values = data.values

@@ -66,6 +66,7 @@ export class BackendService {
     }
   }
 
+  /** Tasks **/
   public static async createTask(taskType: TaskType, title: string, description?:string): Promise<Task> {
     const store = useStore()
     const token = store.tokenPair?.token
@@ -90,12 +91,12 @@ export class BackendService {
         })
       return response.data as Task
     } catch (e) {
-      console.error('Update task error:', e)
+      console.error('Create task error:', e)
       throw Error
     }
   }
 
-  public static async updateTask(taskId: string, updates): Promise<Task> {
+  public static async updateTask(taskId: string, updates: Record<string,any>): Promise<Task> {
     const store = useStore()
     const token = store.tokenPair?.token
 
@@ -140,6 +141,84 @@ export class BackendService {
       return response.status < 300
     } catch (e) {
       console.error('Delete task error:', e)
+      throw Error
+    }
+  }
+
+  /** User Notes **/
+  public static async createUserNote(title: string, contents:string): Promise<Note> {
+    const store = useStore()
+    const token = store.tokenPair?.token
+
+    if (!token) {
+      console.log('Cannot create user note, no auth token present')
+      throw Error
+    }
+
+    try {
+      const response = await axios.post(
+        BASE_URL.concat(API_ROUTES.USERS.NOTES.CREATE_NOTE),
+        {
+          title: title,
+          contents: contents
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      return response.data as Note
+    } catch (e) {
+      console.error('Create user note error:', e)
+      throw Error
+    }
+  }
+
+  public static async updateUserNote(userNoteId: string, updates: Record<string,any>): Promise<Note> {
+    const store = useStore()
+    const token = store.tokenPair?.token
+
+    if (!token) {
+      console.log('Cannot update user note, no auth token present')
+      throw Error
+    }
+
+    try {
+      const response = await axios.put(
+        BASE_URL.concat(API_ROUTES.USERS.NOTES.UPDATE_NOTE).replace(':userNoteId', userNoteId),
+        updates,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      return response.data as Note
+    } catch (e) {
+      console.error('Update user note error:', e)
+      throw Error
+    }
+  }
+
+  public static async deleteUserNote(userNoteId: string): Promise<boolean> {
+    const store = useStore()
+    const token = store.tokenPair?.token
+
+    if (!token) {
+      console.log('Cannot delete user note, no auth token present')
+      throw Error
+    }
+
+    try {
+      const response = await axios.delete(
+        BASE_URL.concat(API_ROUTES.USERS.NOTES.DELETE_NOTE).replace(':userNoteId', userNoteId),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      return response.status < 300
+    } catch (e) {
+      console.error('Delete user note error:', e)
       throw Error
     }
   }
