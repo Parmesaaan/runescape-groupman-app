@@ -22,7 +22,9 @@ const notes = computed(() => {
 const menuItems = computed<MenuItem[]>(() => {
   return notes.value.map(n => {
     return {
-      label: formatTitle(n.title),
+      label: formatTitle(n.title, 16),
+      createdAt: formatDate(n.createdAt),
+      icon: 'pi pi-file',
       command: () => selectedNote.value = n
     }
   })
@@ -201,9 +203,16 @@ const deleteNote = async () => {
         </IconField>
       </div>
       <p v-if="!notes.length" class="flex flex-grow justify-center text-center">No notes here</p>
-      <div class="flex justify-center w-full">
+      <div class="flex justify-center w-[100%]">
         <ScrollPanel class="w-full h-full">
-          <PanelMenu :model="menuItems"/>
+          <PanelMenu :model="menuItems">
+            <template #item="{ item }">
+              <a class="flex items-center px-1 py-2 cursor-pointer group text-white line-height-1 max-h-[30px]">
+                <span class="mr-1 overflow-hidden overflow-ellipsis max-w-[60%]">{{ item.label }}</span>
+                <span class="text-gray-400 text-xs ml-auto">{{ item.createdAt }}</span>
+              </a>
+            </template>
+          </PanelMenu>
         </ScrollPanel>
       </div>
     </div>
