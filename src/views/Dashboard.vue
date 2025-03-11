@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import PanelMenu from 'primevue/panelmenu'
 import Divider from "primevue/divider"
-import Player from "../composables/player/Player.vue"
+import PlayerHome from "../composables/player/PlayerHome.vue"
 import {useStore} from "../stores"
 import {type Component, computed, ref, shallowRef} from "vue"
 import Group from "../composables/group/Group.vue"
 import type {MenuItem} from "primevue/menuitem"
 import PlayerNotes from "../composables/player/PlayerNotes.vue"
 import PlayerTasks from "../composables/player/PlayerTasks.vue"
-import GroupJoin from "../composables/group/GroupJoin.vue"
-import GroupCreate from "../composables/group/GroupCreate.vue"
 import router from "../router"
 import {Group as GroupModel} from "../models"
 
@@ -21,7 +19,7 @@ const menuItems = computed<MenuItem[]>(() => {
     {
       label: profile.user.username,
       icon: "pi pi-user",
-      command: () => selectedComponent.value = Player
+      command: () => selectedComponent.value = PlayerHome
     },
     {
       label: "Tasks",
@@ -56,7 +54,7 @@ const menuItems = computed<MenuItem[]>(() => {
   ]
 })
 
-const selectedComponent = shallowRef<Component>(Player)
+const selectedComponent = shallowRef<Component>(PlayerHome)
 const selectedGroup = ref<GroupModel>()
 
 const getGroupNavs = () => {
