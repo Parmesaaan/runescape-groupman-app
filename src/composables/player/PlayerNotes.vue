@@ -43,7 +43,7 @@ const resolver = (data) => {
   const errors = {
     title: [],
     contents: [],
-  }
+  } as { title: {message:string}[], contents: {message:string}[]}
 
   if (newMode && !values.title) errors.title.push({ message: 'Title is required.'})
   if (newMode && !values.contents) errors.contents.push({ message: 'Contents is required.'})
@@ -194,12 +194,12 @@ const deleteNote = async () => {
     <div class="flex flex-column items-center gap-2 min-w-[30%] max-w-[30%] max-h-100">
       <span class="text-xl font-bold">Your Notes ({{ notes.length }})</span>
       <Divider layout="horizontal"/>
-      <div class="flex items-center w-full max-w-[80%] mb-2">
-        <IconField>
+      <div class="flex items-center w-full mb-2">
+        <IconField class="flex flex-grow">
           <InputIcon>
             <i class="pi pi-search" />
           </InputIcon>
-          <InputText v-model="filter" placeholder="Search" class="max-w-[80%]"/>
+          <InputText v-model="filter" placeholder="Search" class="max-w-[100%]"/>
         </IconField>
       </div>
       <p v-if="!notes.length" class="flex flex-grow justify-center text-center">No notes here</p>
