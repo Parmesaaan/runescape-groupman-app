@@ -37,30 +37,7 @@ const menuItems = computed<MenuItem[]>(() => {
       label: "Groups",
       icon: "pi pi-users",
       disabled: true,
-      items: [
-        {
-          label: "My Groups",
-          icon: "pi pi-users",
-          items: profile.groups.map(group => ({
-            label: group.name,
-            icon: "pi pi-users",
-            command: () => {
-              selectedComponent.value = Group
-              selectedGroup.value = group
-            }
-          })),
-        },
-        {
-          label: "Join Group",
-          icon: "pi pi-user-plus",
-          command: () => selectedComponent.value = GroupJoin
-        },
-        {
-          label: "New Group",
-          icon: "pi pi-plus-circle",
-          command: () => selectedComponent.value = GroupCreate
-        },
-      ]
+      items: getGroupNavs()
     },
     {
       label: "Utilities",
@@ -81,6 +58,20 @@ const menuItems = computed<MenuItem[]>(() => {
 
 const selectedComponent = shallowRef<Component>(Player)
 const selectedGroup = ref<GroupModel>()
+
+const getGroupNavs = () => {
+  const groupsMap = profile.groups.map(group => ({
+    label: group.name,
+    icon: "pi pi-users",
+    command: () => {
+      selectedComponent.value = Group
+      selectedGroup.value = group
+    }
+  }))
+
+  if (groupsMap.length) return groupsMap
+  return undefined
+}
 
 </script>
 
