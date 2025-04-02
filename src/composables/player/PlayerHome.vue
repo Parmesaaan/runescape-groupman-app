@@ -49,7 +49,7 @@ onMounted(() => {
           </div>
           <div class="flex flex-column items-center line-height-2 mt-2">
             <span class="text-gray-400">Account Created</span>
-            <span>{{ formatDateTime(user.createdAt) }}</span>
+            <span>{{ formatDateTime(user.createdAt.toString()) }}</span>
           </div>
           <Divider layout="horizontal"/>
           <div class="flex flex-column items-center line-height-2">

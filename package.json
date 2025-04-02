@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tauri-dev": "npx tauri dev",
+    "tauri-build": "npx tauri build"
   },
   "dependencies": {
     "@primeuix/themes": "^1.0.0",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@primevue/auto-import-resolver": "^4.3.1",
+    "@tauri-apps/cli": "^2.4.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
     "typescript": "~5.7.2",
